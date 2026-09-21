@@ -17,6 +17,8 @@ Uploaded file metadata is stored in PostgreSQL through Prisma. In local developm
 
 The upload limit is 50 MB per file. The API supports listing and searching files with `GET /api/files`, creating files with `POST /api/files`, downloading with `GET /api/files/:id/download`, and deleting with `DELETE /api/files/:id`.
 
+This project requires Node.js `20.19.0` or newer because Prisma 7 and the AWS SDK use Node 20 APIs.
+
 ## Deploy to Railway
 
 1. Create a new Railway project and add a PostgreSQL service.
