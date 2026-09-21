@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="A private, searchable home for your project files." />
+		<title><%= pageTitle %></title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<main class="shell">
+			<header class="topbar">
+				<a class="brand" href="/" aria-label="The Backpack home">
+					<span class="brand-mark">/</span>
+					<span>The Backpack</span>
+				</a>
+				<div class="topbar-account">
+					<span class="topbar-meta"><i class="status-dot"></i> <%= currentUser.email %></span>
+					<form method="post" action="/logout"><button class="logout-button" type="submit">Log out</button></form>
+				</div>
+			</header>
+
+			<section class="hero">
+				<div>
+					<p class="eyebrow">PRIVATE FILE DESK <span>07</span></p>
+					<h1>Put your files<br /><em>somewhere useful.</em></h1>
+					<p class="lede">
+						A tidy, searchable home for the things your project needs next.
+					</p>
+				</div>
+			</section>
+
+			<form class="upload-panel" action="/files" method="post" enctype="multipart/form-data" aria-label="Upload files">
+				<div class="upload-icon" aria-hidden="true">↥</div>
+				<div>
+					<h2>Drop anything in</h2>
+					<p>or <label class="inline-button" for="file">browse your device</label></p>
+					<input id="file" name="file" type="file" required />
+					<button class="upload-button" type="submit">Upload file</button>
+				</div>
+				<p class="upload-spec">MAX 50 MB<br />ALL FILE TYPES</p>
+			</form>
+
+			<% if (success) { %><p class="notice success"><%= success %></p><% } %>
+			<% if (error) { %><p class="notice error"><%= error %></p><% } %>
+
+			<section class="library-head">
+				<div>
+					<p class="eyebrow">YOUR LIBRARY</p>
+					<h2>Recent files <span><%= String(files.length).padStart(2, "0") %></span></h2>
+				</div>
+				<form class="search-box" method="get" action="/">
+					<span aria-hidden="true">⌕</span>
+					<input name="search" type="search" placeholder="Search files" value="<%= search %>" />
+				</form>
+			</section>
+
+			<% if (files.length === 0) { %>
+				<p class="empty-state"><%= search ? "No files match your search." : "Your library is ready for its first file." %></p>
+			<% } else { %>
+				<section class="file-list" aria-label="Uploaded files">
+					<% files.forEach((file) => { %>
+						<article class="file-row">
+							<div class="file-type"><%= file.originalName.includes(".") ? file.originalName.split(".").pop().slice(0, 5) : "FILE" %></div>
+							<div class="file-name" title="<%= file.originalName %>"><%= file.originalName %></div>
+							<div class="file-meta"><%= formatFileSize(file.size) %></div>
+							<div class="file-date"><%= file.createdAt.toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" }) %></div>
+							<div class="file-actions">
+								<a class="icon-button" href="/files/<%= file.id %>/download" title="Download file">↓</a>
+								<form method="post" action="/files/<%= file.id %>/delete"><button class="icon-button" type="submit" title="Delete file">×</button></form>
+							</div>
+						</article>
+					<% }); %>
+				</section>
+			<% } %>
+			<footer>
+				<span>THE BACKPACK / FILE LIBRARY</span
+				><span>BUILT FOR THE NEXT THING</span>
+			</footer>
+		</main>
+	</body>
+</html>
