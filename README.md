@@ -36,6 +36,6 @@ S3_SECRET_ACCESS_KEY=<your-secret-key>
 S3_BUCKET=<your-bucket-name>
 ```
 
-Railway provides `PORT` automatically. The `railway.toml` configuration runs `npm ci`, generates Prisma Client, applies committed migrations with `prisma migrate deploy`, and starts the server. When all five `S3_*` variables are present, uploads use object storage automatically.
+Railway provides `PORT` automatically and installs dependencies from `package-lock.json`. The `railway.toml` configuration generates Prisma Client, applies committed migrations with `prisma migrate deploy`, and starts the server. When all five `S3_*` variables are present, uploads use object storage automatically.
 
 Do not use the local `storage/` fallback for production uploads because Railway service disks are ephemeral.
